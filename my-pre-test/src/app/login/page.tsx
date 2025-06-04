@@ -4,12 +4,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import LoginForm from "@/components/login/loginForm";
 import { login } from "@/app/actions/auth";
 import { useAuth } from "@/stores/useAuth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@/stores/useAuth";
+import LoginForm from "@/components/login/LoginForm";
 export default function ProfilePage() {
   const router = useRouter();
   const { setUser } = useAuth();

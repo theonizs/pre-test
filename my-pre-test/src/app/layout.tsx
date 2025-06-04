@@ -17,10 +17,12 @@ export const generateMetadata = async ({
   params: { locale: string };
 }): Promise<Metadata> => {
   const title = params.locale === "th" ? "แอปของฉัน" : "MyApp";
+  const description =
+    params.locale === "th" ? "โปรเจ็คสำหรับเว็บแอป" : "Project for web app";
   return {
     ...manifest,
     title,
-    description: title + " - multilingual app",
+    description,
   };
 };
 

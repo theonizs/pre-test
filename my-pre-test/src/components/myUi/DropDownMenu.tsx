@@ -51,6 +51,7 @@ const MyDropdown: React.FC<DropDownMenuProp> = ({
     const result = await logout();
     if (result.success) {
       setLogout();
+      router.push("/");
     }
   };
 

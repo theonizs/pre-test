@@ -6,7 +6,10 @@ export function middleware(request: NextRequest) {
   const isAuthenticated = !!authToken;
 
   const { pathname } = request.nextUrl;
-  if (pathname.startsWith("/my-profile")) {
+  if (
+    pathname.startsWith("/my-profile") ||
+    pathname.startsWith("/my-component")
+  ) {
     if (!isAuthenticated) {
       return NextResponse.redirect(new URL("/login", request.url));
     }

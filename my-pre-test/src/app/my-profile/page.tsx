@@ -7,7 +7,7 @@ export default function MyProfilePage() {
   const { user } = useAuth();
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex items-center justify-center w-full">
       <Avatar
         src={myProfileImage}
         priority={true}

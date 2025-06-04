@@ -18,10 +18,11 @@ import {
 
 // 1. Define your form schema with Zod for validation
 const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address." }),
+  email: z.string().email({ message: "Invalid email address." }).trim(),
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
+    .min(6, { message: "Password must be at least 6 characters." })
+    .trim(),
 });
 
 // Define the type for form values
@@ -66,7 +67,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-gray-100">
           Login
         </h2>
-
         {/* Email Input Field */}
         <FormField
           control={form.control}
@@ -88,7 +88,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
             </FormItem>
           )}
         />
-
         {/* Password Input Field */}
         <FormField
           control={form.control}
@@ -111,6 +110,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
                     type="button" // Important: Prevent form submission
                     variant="ghost"
                     size="sm"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                     className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 hover:bg-transparent"
                     onClick={() => setShowPassword((prev) => !prev)} // Toggle visibility
                   >
@@ -126,7 +128,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
             </FormItem>
           )}
         />
-
         {/* Submit Button */}
         <Button
           type="submit"
