@@ -3,6 +3,7 @@ import { Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AuthGuard from "@/components/AuthGuard";
 
 import manifest from "./manifest";
 
@@ -36,9 +37,15 @@ export default function RootLayout({
       <body className={`${notoSansThai.variable} font-sans antialiased`}>
         <Header />
         <main className="flex-1 px-4 py-6 bg-gray-50 min-h-screen">
-          {children}
+          <AuthGuard>{children}</AuthGuard>
         </main>
         <Footer />
+
+        {/* <Header />
+        <main className="flex-1 px-4 py-6 bg-gray-50 min-h-screen">
+          {children}
+        </main>
+        <Footer /> */}
       </body>
     </html>
   );

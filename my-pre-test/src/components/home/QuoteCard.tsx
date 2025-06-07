@@ -5,10 +5,13 @@ import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuth";
+import { dayjsFormat } from "utils/dayjs";
 
 interface QuoteCardProps {
   quoteId: string; // Unique ID for the quote
   initialQuote?: {
+    createdAt: Date;
     text: string;
     author: string;
     upvotes: number;
@@ -16,67 +19,34 @@ interface QuoteCardProps {
   };
   // Optional prop to simulate loading, useful for parent components
   // If true, it will show skeletons regardless of initialQuote
-  forceLoading?: boolean;
+  onVote: (quoteId: string, voteType: "up" | "down") => void;
+  userVote?: "up" | "down";
 }
 
 const QuoteCard: React.FC<QuoteCardProps> = ({
   quoteId,
   initialQuote,
-  forceLoading = false,
+  onVote,
+  userVote,
 }) => {
+  const { isAuthenticated } = useAuthStore();
   const [quote, setQuote] = useState(initialQuote);
-  const [isLoading, setIsLoading] = useState(forceLoading || !initialQuote);
-  const [error, setError] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    // Simulate fetching data for the quote
-    // In a real app, this would be an API call
-    if (!initialQuote && !forceLoading) {
-      setIsLoading(true);
-      setError(null);
-      const timer = setTimeout(() => {
-        // Example fetched data
-        const fetchedQuote = {
-          text: "The only way to do great work is to love what you do.",
-          author: "Steve Jobs",
-          upvotes: Math.floor(Math.random() * 100),
-          downvotes: Math.floor(Math.random() * 20),
-        };
-        setQuote(fetchedQuote);
-        setIsLoading(false);
-      }, 1500); // Simulate network delay
-
-      return () => clearTimeout(timer);
+    if (initialQuote) {
+      setQuote(initialQuote);
+    } else {
+      setQuote(undefined);
     }
-  }, [quoteId, initialQuote, forceLoading]);
 
-  const handleVote = (type: "up" | "down") => {
-    if (!quote) return;
-    // Simulate API call to update vote
-    console.log(`Voting ${type} for quoteId: ${quoteId}`);
-    setQuote((prevQuote) => {
-      if (!prevQuote) return prevQuote;
-      return {
-        ...prevQuote,
-        upvotes: type === "up" ? prevQuote.upvotes + 1 : prevQuote.upvotes,
-        downvotes:
-          type === "down" ? prevQuote.downvotes + 1 : prevQuote.downvotes,
-      };
-    });
-    // In a real app, you'd send this update to your backend
-  };
-
-  if (error) {
-    return (
-      <div className="p-4 border rounded-lg bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200">
-        Error loading quote: {error}
-      </div>
-    );
-  }
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, [initialQuote]);
 
   return (
-    <div className="flex flex-col p-4 border rounded-lg  bg-white dark:bg-gray-800 w-full max-w-xs sm:max-w-sm md:max-w-md">
-      {isLoading || !quote ? (
+    <div className="flex flex-col p-4 border rounded-lg bg-white dark:bg-gray-800 w-full max-w-xs sm:max-w-sm md:max-w-md">
+      {loading || !quote ? (
         // Skeleton loading state
         <>
           <Skeleton className="w-full h-24 sm:h-32 rounded-md mb-4" />{" "}
@@ -100,31 +70,43 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
             &quot;{quote.text}&quot;
           </p>
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-4">
-            - {quote.author}
+            by - {quote.author}
+          </p>
+          <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-4">
+            created - {dayjsFormat(quote.createdAt, "DD MMM YYYY")}
           </p>
           <div className="flex flex-wrap justify-between items-center mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-2">
               <Button
-                variant="ghost"
+                variant={"ghost"}
                 size="sm"
-                onClick={() => handleVote("up")}
-                className="dark:text-gray-200 dark:hover:bg-gray-700"
+                onClick={() => onVote(quoteId, "up")}
+                disabled={!isAuthenticated}
+                className="dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
               >
-                {/* <ThumbsUp className="h-4 w-4 mr-1" /> */}
-                👍 {quote.upvotes}
+                {userVote === "up" ? (
+                  "👍 "
+                ) : (
+                  <ThumbsUp className="h-4 w-4 mr-1" />
+                )}
+                {quote.upvotes}
               </Button>
               <Button
-                variant="ghost"
+                variant={"ghost"}
                 size="sm"
-                onClick={() => handleVote("down")}
-                className="dark:text-gray-200 dark:hover:bg-gray-700"
+                onClick={() => onVote(quoteId, "down")}
+                disabled={!isAuthenticated}
+                className="dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
               >
-                <ThumbsDown className="h-4 w-4 mr-1" />
+                {userVote === "down" ? (
+                  "👎 "
+                ) : (
+                  <ThumbsDown className="h-4 w-4 mr-1" />
+                )}
                 {quote.downvotes}
-                {/* 👎 {quote.downvotes} */}
               </Button>
             </div>
-            <span className="text-sm text-gray-500 dark:text-gray-400 px-2">
+            <span className="text-sm font-semibold text-gray-800 dark:text-gray-600 px-2">
               Total: {quote.upvotes + quote.downvotes}
             </span>
           </div>

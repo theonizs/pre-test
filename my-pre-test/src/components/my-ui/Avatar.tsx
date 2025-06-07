@@ -4,7 +4,7 @@ import Image, { StaticImageData } from "next/image";
 interface AvatarProps {
   src?: string | StaticImageData;
   alt?: string;
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | "xlarge";
   rounded?: boolean;
   priority?: boolean;
   className?: string; // เพิ่ม className prop
@@ -22,6 +22,7 @@ const Avatar: React.FC<AvatarProps> = ({
     small: "w-8 h-8",
     medium: "w-12 h-12",
     large: "w-16 h-16",
+    xlarge: "w-24 h-24",
   };
 
   const roundedClasses = rounded ? "rounded-full" : "rounded-md";

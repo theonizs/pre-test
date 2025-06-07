@@ -5,14 +5,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { login } from "@/app/actions/auth";
-import { useAuth } from "@/stores/useAuth";
-import { useState } from "react";
+import { useAuthStore, type User } from "@/stores/useAuth";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { User } from "@/stores/useAuth";
 import LoginForm from "@/components/login/LoginForm";
+
 export default function ProfilePage() {
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { setUser, setLogout } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -26,8 +26,6 @@ export default function ProfilePage() {
     try {
       // Call your server action
       const result = await login(values); // Make sure your login action accepts an object, not FormData
-
-      console.log("vcxccxvasd", result);
       if (result?.success) {
         setUser({ user: result.user as User, token: result.token as string });
         router.push("/my-profile");
@@ -41,6 +39,10 @@ export default function ProfilePage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setLogout();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

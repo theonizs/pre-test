@@ -3,7 +3,6 @@
 import { cookies } from "next/headers";
 
 export async function login(formLogin: { email: string; password: string }) {
-  console.log("asdasdas 3243223423", formLogin);
   if (formLogin.email === "test@test.com" && formLogin.password === "test@@") {
     const token = "your_generated_token";
     (await cookies()).set("authToken", token, { httpOnly: true, maxAge: 3600 });

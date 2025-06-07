@@ -10,9 +10,9 @@ const nextConfig: NextConfig = {
   //   locales: ["en"],
   //   defaultLocale: "en",
   // },
-  // compiler: {
-  //   removeConsole: process.env.NODE_ENV !== "development",
-  // },
+  compiler: {
+    removeConsole: process.env.NODE_ENV !== "development",
+  },
 };
 
 export default nextConfig;

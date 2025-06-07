@@ -1,12 +1,12 @@
 "use client";
-import { useAuth, type User } from "@/stores/useAuth";
+import { useAuthStore, type User } from "@/stores/useAuth";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { login, logout } from "@/app/actions/auth";
 export default function LoginBtn() {
   const router = useRouter();
-  const { isAuthenticated, isLoading, setUser } = useAuth();
+  const { isAuthenticated, isLoading, setUser } = useAuthStore();
 
   const handleLogin = async () => {
     const formLogin = { email: "test@test.com", password: "test@" };
@@ -22,7 +22,6 @@ export default function LoginBtn() {
   };
 
   const handleLogout = async () => {
-    console.log("456546456456546");
     await logout();
 
     router.push("/");

@@ -1,12 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
-  console.log("middleware trigger");
-
   const authToken = request.cookies.get("authToken")?.value;
   const isAuthenticated = !!authToken;
-
   const { pathname } = request.nextUrl;
+
+  console.log("middleware trigger", isAuthenticated);
+
   if (
+    pathname.startsWith("/") ||
     pathname.startsWith("/my-profile") ||
     pathname.startsWith("/my-component")
   ) {
@@ -25,5 +26,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/my-profile/:path*", "/my-component/:path*"],
+  matcher: ["/", "/my-profile/:path*", "/my-component/:path*"],
 };

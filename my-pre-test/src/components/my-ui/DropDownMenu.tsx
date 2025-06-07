@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { logout } from "@/app/actions/auth";
-import { useAuth } from "@/stores/useAuth";
+import { useAuthStore } from "@/stores/useAuth";
 import Avatar from "./Avatar";
 import { StaticImageData } from "next/image";
 interface Item {
@@ -38,7 +38,7 @@ const MyDropdown: React.FC<DropDownMenuProp> = ({
   image,
 }) => {
   const router = useRouter();
-  const { isAuthenticated, setLogout } = useAuth();
+  const { isAuthenticated, setLogout } = useAuthStore();
   const handleClick = (value: string) => {
     router.push(value);
   };
