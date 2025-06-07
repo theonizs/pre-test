@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuth";
 import { dayjsFormat } from "utils/dayjs";
