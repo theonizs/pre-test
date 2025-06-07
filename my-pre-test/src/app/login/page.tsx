@@ -8,7 +8,7 @@ import { login } from "@/app/actions/auth";
 import { useAuthStore, type User } from "@/stores/useAuth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import LoginForm from "@/components/login/LoginForm";
+import LoginForm from "@/components/login/LoginFormTemp";
 
 export default function ProfilePage() {
   const router = useRouter();
